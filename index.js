@@ -25,6 +25,21 @@ app.post('/users', (req, res)=>{
         )
     }
 })
+app.delete('/users/:id', (req,res)=>{
+    const user = db.find(row => row.id === req.params.id)
+    if(user){
+        db.remove(req.params.id).then(result => res.send(result))
+    }else{
+        res.status(500).json({ errorMessage: "The user could not be removed" })
+    }
+})
+
+app.put('/users/:id', (req, res)=>{
+    let id = req.params.id;
+    let info = req.body
+    db.update(id,info).then(result => res.json({success: result}))
+})
+
 app.listen(80,"127.0.0.1",()=>{
     console.log("App Listening on port 80")
 })
